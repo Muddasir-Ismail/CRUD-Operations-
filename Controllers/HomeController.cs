@@ -52,18 +52,21 @@ namespace CRUD_Operations_.Controllers
         [HttpPost]
         public ActionResult Edit(Student s)
         {
-            db.Entry(s).State = EntityState.Modified;
-            int a = db.SaveChanges();
-            if(a > 0)
+            if (ModelState.IsValid)
             {
-                //ViewBag.UpdateMessage = "<script>alert('Data updated!!')</script>";
-                //ModelState.Clear();
-                TempData["InsertMessage"] = "Data Updated!!";
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                ViewBag.UpdateMessage = "<script>alert('Data not updated!!')</script>";
+                db.Entry(s).State = EntityState.Modified;
+                int a = db.SaveChanges();
+                if (a > 0)
+                {
+                    //ViewBag.UpdateMessage = "<script>alert('Data updated!!')</script>";
+                    //ModelState.Clear();
+                    TempData["UpdateMessage"] = "Data Updated!!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.UpdateMessage = "<script>alert('Data not updated!!')</script>";
+                }
             }
             return View();
         }
