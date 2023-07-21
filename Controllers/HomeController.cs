@@ -1,6 +1,7 @@
 ﻿using CRUD_Operations_.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -41,6 +42,29 @@ namespace CRUD_Operations_.Controllers
                 }
             }
             
+            return View();
+        }
+        public ActionResult Edit(int Id)
+        {
+            var row = db.Students.Where(model => model.Id == Id).FirstOrDefault();
+            return View(row);
+        }
+        [HttpPost]
+        public ActionResult Edit(Student s)
+        {
+            db.Entry(s).State = EntityState.Modified;
+            int a = db.SaveChanges();
+            if(a > 0)
+            {
+                //ViewBag.UpdateMessage = "<script>alert('Data updated!!')</script>";
+                //ModelState.Clear();
+                TempData["InsertMessage"] = "Data Updated!!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.UpdateMessage = "<script>alert('Data not updated!!')</script>";
+            }
             return View();
         }
     }
