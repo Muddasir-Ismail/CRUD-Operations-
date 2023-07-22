@@ -70,5 +70,32 @@ namespace CRUD_Operations_.Controllers
             }
             return View();
         }
+        public ActionResult Delete(int Id)
+        {
+            var StudentIdRow = db.Students.Where(model => model.Id == Id).FirstOrDefault();
+            return View(StudentIdRow);
+        }
+        [HttpPost]
+        public ActionResult Delete(Student s)
+        {
+            db.Entry(s).State = EntityState.Deleted;
+            int a = db.SaveChanges();
+            if (a > 0)
+            {
+                TempData["DeleteMessage"] = "Data deleted!!";
+            }
+            else
+            {
+                TempData["DeleteMessage"] = "Data not deleted!!";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Details(int Id)
+        {
+            var DetailsById = db.Students.Where(model => model.Id == Id).FirstOrDefault();
+            return View(DetailsById);
+        }
     }
 }
